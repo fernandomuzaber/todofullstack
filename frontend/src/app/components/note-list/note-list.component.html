@@ -1,0 +1,47 @@
+<div *ngIf="notes.length > 0; else noNotes" class="note-list">
+    <div>
+        <label for="categoryFilter">Filter by category:</label>
+        <input
+          id="categoryFilter"
+          [(ngModel)]="filterCategory"
+          (input)="filterNotesByCategory()"
+          placeholder="Enter category"
+        />
+      </div>
+    <div class="active-notes">
+     
+        <h2>Active Notes</h2>
+        <div *ngFor="let note of notes" class="note-item">
+            <h3>{{ note.title }}</h3>
+            <p>{{ note.content }}</p>
+            <small>Categories: {{ note.categories?.join(',') || 'None' }}</small>
+            
+            <!-- EDIT BUTTON -->
+            <button (click)="editNote(note)" class="edit-btn">Edit</button> 
+            <!-- ARCHIVE BUTTON -->
+            <button (click)="archiveNote(note)" class="archive-btn">Archive</button>
+            <!-- DELETE BUTTON -->
+            <button (click)="deleteNote(note)" class="delete-btn">Delete</button>
+            <p *ngIf="notes.length === 0">No active notes available.</p>
+        </div>
+    </div>
+
+    <!-- ARCHIVED NOTES -->
+    <div class="archived-notes">
+        <h2>Archived Notes</h2>
+        <div *ngFor="let note of archivedNotes" class="note-item">
+            <div>
+                <h3>{{ note.title }}</h3>
+                <p>{{ note.content }}</p>
+                <button (click)="unarchiveNote(note)" class="unarchive-btn">Unarchive</button>
+                <button (click)="deleteNote(note)" class="delete-btn">Delete</button>
+                <button (click)="editNote(note)" class="edit-btn">Edit</button> 
+            </div>
+        </div>
+        <p *ngIf="archivedNotes.length === 0">No archived notes available.</p>
+    </div>
+</div>
+
+<ng-template #noNotes>
+    <p>No active notes found.</p>
+</ng-template>
